@@ -140,7 +140,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | ByteSize | TimeDuration
  ;
 
 ecommand
@@ -311,3 +311,11 @@ fragment Int
 fragment Digit
  : [0-9]
  ;
+
+// Add byte size and time duration support
+fragment DECIMAL : '-'? [0-9]+ ('.' [0-9]+)?;
+fragment BYTE_UNIT : [KMGTP] [bB] | [bB];
+ByteSize : DECIMAL BYTE_UNIT;
+
+fragment TIME_UNIT : ('ms' | 's' | 'm' | 'h');
+TimeDuration : DECIMAL TIME_UNIT;

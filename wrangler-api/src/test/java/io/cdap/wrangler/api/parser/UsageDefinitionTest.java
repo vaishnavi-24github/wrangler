@@ -72,5 +72,26 @@ public class UsageDefinitionTest {
 
     Assert.assertTrue(true);
   }
-
+  
+  @Test
+  public void testByteSizeAndTimeDurationUsage() {
+    // Test ByteSize token type
+    UsageDefinition.Builder builder = UsageDefinition.builder("set-buffer-size");
+    builder.define("size", TokenType.BYTE_SIZE);
+    String usage = builder.build().toString();
+    Assert.assertEquals("set-buffer-size size (e.g., 10KB, 150MB, 2GB)", usage);
+    
+    // Test TimeDuration token type
+    builder = UsageDefinition.builder("set-timeout");
+    builder.define("duration", TokenType.TIME_DURATION);
+    usage = builder.build().toString();
+    Assert.assertEquals("set-timeout duration (e.g., 300ms, 2s, 5m, 1h)", usage);
+    
+    // Test optional ByteSize and TimeDuration
+    builder = UsageDefinition.builder("configure");
+    builder.define("buffer", TokenType.BYTE_SIZE, Optional.TRUE);
+    builder.define("timeout", TokenType.TIME_DURATION, Optional.TRUE);
+    usage = builder.build().toString();
+    Assert.assertEquals("configure [buffer (e.g., 10KB, 150MB, 2GB)] [timeout (e.g., 300ms, 2s, 5m, 1h)]", usage);
+  }
 }
